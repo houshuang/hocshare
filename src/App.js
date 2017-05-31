@@ -5,20 +5,23 @@ import './App.css';
 import ShareHOC from './reactive';
 import Pretty from 'react-json-pretty';
 
-const Chat = ({ data, dataFn, removeFn }) => (
+const Chat = ({ title, data, dataFn, removeFn }) => (
   <div style={{ backgroundColor: data.color }}>
+    <h1>{title}</h1>
     <ul>{data && data.chats.map(e => <li>{e}</li>)}</ul>
-    <p onClick={() => dataFn.listPrepend('Hello message ' + Date(), 'chats')}>
-      Add msg before
-    </p>
-    <p onClick={() => dataFn.listAppend('Hello message ' + Date(), 'chats')}>
-      Add msg after
-    </p>
-    <p onClick={() => dataFn.objSet('blue', 'color')}>Blue</p>
-    <p onClick={() => dataFn.objSet('red', 'color')}>Red</p>
-    <p onClick={removeFn}>
-      Remove list
-    </p>
+    <div style={{ display: 'flex' }}>
+      <p onClick={() => dataFn.listPrepend('Hello message ' + Date(), 'chats')}>
+        Prepend msg
+      </p>
+      <p onClick={() => dataFn.listAppend('Hello message ' + Date(), 'chats')}>
+        Append msg
+      </p>
+      <p onClick={() => dataFn.objSet('blue', 'color')}>Blue</p>
+      <p onClick={() => dataFn.objSet('red', 'color')}>Red</p>
+      <p onClick={removeFn}>
+        Remove list
+      </p>
+    </div>
     <hr />
   </div>
 );
@@ -30,11 +33,12 @@ const Chats = ({ data, dataFn }) => (
         data={dataFn.specializeData(i, data)}
         dataFn={dataFn.specialize(i)}
         removeFn={() => dataFn.listDel(chat, i)}
+        title={'Chat ' + i}
         key={i}
       />
     ))}
     <p onClick={() => dataFn.listAppend({ chats: [], color: 'white' })}>
-      Add list
+      Add chat
     </p>
   </div>
 );
@@ -47,7 +51,7 @@ const App = ({ welcome, data, dataFn }) => {
         data={dataFn.specializeData('chats', data)}
       />
       <hr />
-      <div style={{ backgroundColor: data.color }}>
+      <div style={{ backgroundColor: data.color, display: 'flex' }}>
         <Pretty id={1} json={data} />
         <p onClick={() => dataFn.objSet('blue', 'color')}>Blue</p>
         <p onClick={() => dataFn.objSet('red', 'color')}>Red</p>
@@ -58,4 +62,4 @@ const App = ({ welcome, data, dataFn }) => {
 
 const dataStructure = { chats: [], color: 'white' };
 
-export default ShareHOC(dataStructure, 'xxxy')(App);
+export default ShareHOC(dataStructure, 'afg')(App);
